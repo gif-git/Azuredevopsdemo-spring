@@ -1,23 +1,30 @@
-# maven-demo
+# Azure Pipelines YAML
 
-Clone this to your workspace:
+YAML templates, samples, and community interaction for designing [Azure Pipelines](https://docs.microsoft.com/azure/devops/pipelines/).
 
-    git clone https://github.com/davidmoten/maven-demo.git
+We've consolidated issue and suggestion tracking in [Developer Community](https://developercommunity.visualstudio.com/spaces/21/index.html).
+This repo will remain for working in the open on YAML pipelines, so feedback on PRs will be the primary way to use it.
+You might also want the [docs](https://docs.microsoft.com/en-us/azure/devops/pipelines/?view=azure-devops) or to open a [support ticket](https://azure.microsoft.com/support/devops/).
 
-##Import to Eclipse
+- [Templates](templates/)
+- [Design docs](design/README.md)
 
-To import this maven structured project into Eclipse:
+## Contributing
 
-* **File - Import - Maven - Existing Maven Projects**
-* open the `maven-demo` folder and hit **Finish**
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a
+Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
+the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-The project includes a dependency on *r-tree*, a main class `Thing` and a test class `ThingTest`.
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
+a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
+provided by the bot. You will only need to do this once across all repos using our CLA.
 
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
+For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
+contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-##Build 
-To build from the command line (to produce a jar for instance):
+## Security issues
 
-    cd maven-demo
-    mvn clean install
-
-You'll see the tests have been run and a jar has been built and put in the *target* directory.
+Do you think there might be a security issue with Azure Pipelines?
+Have you been phished or identified a security vulnerability?
+Please don't report it here - let us know by sending an email to secure@microsoft.com.

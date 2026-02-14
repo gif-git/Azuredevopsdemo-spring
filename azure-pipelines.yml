@@ -1,17 +1,4 @@
 #Demo Spring application
-parameters:
-- name: releaseName
-  type: string
-  displayName: 'Release Name'
-  default: Demo 
-- name: major
-  type: number
-  displayName: 'Major version'
-  default: 1 
-- name: minor
-  type: number
-  displayName: 'Minor version'
-  default: 0 
 
 trigger:
  branches:
@@ -26,33 +13,44 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-  - stage: 'BuildBranchName'
-    displayName: 'Build Branch Name'
+  - stage: 'Junit'
+    displayName: 'Junit Stage'
     jobs:
-      - job: 'BranchName'
-        variables:
-          buildName: ${{parameters.releaseName}}
-          majorVersion: ${{parameters.major}}
-          minorVersion: ${{parameters.minor}}
-          branchPRNumber: $[counter(variables['System.PullRequest.PullRequestId'], 0)]
-          branchBuildNumber: $[counter(variables['Build.SourceBranch'], 0)]
-        displayName: 'BranchName'
+      - job: 'JunitTest'
+        displayName: 'Running unit tests'
         steps:
-        - template: 'cicd/templates/buildBranchName.yml'
-
+          - script: echo 'Running Spring demo app unit test'
+          - task: Maven@3
+            inputs:
+              mavenPomFile: 'pom.xml'
+              goals: 'test'
+              options: '--no-transfer-progress'
+              publishJUnitResults: true
+              testResultsFiles: '**/surefire-reports/TEST-*.xml'
+              codeCoverageToolOption: 'JaCoCo'
+              javaHomeOption: 'JDKVersion'
+              mavenVersionOption: 'Default'
+              mavenAuthenticateFeed: false
+              effectivePomSkip: false
+              sonarQubeRunAnalysis: false
+              checkStyleRunAnalysis: true
+              pmdRunAnalysis: true
+              
   - stage: 'BuildArtifact'
     displayName: ' Building Artifact'
     jobs:
       - job: 'BuildArtifact'
         displayName: 'Building Artifact'
         steps:
-        - template: 'cicd/templates/build.yml'
-
-  - stage: 'Dockerize'
-    displayName: 'Create Docker Image'
-    condition: and(succeeded(),ne(variables['Build.Reason'],'PullRequest'))
-    jobs:
-      - job: 'CreateDockerImage'
-        displayName: 'Build and Publish Docker Image'
-        steps:
-          - template: 'cicd/templates/dockerize.yml'
+        - task: Maven@3
+          inputs:
+            mavenPomFile: 'pom.xml'
+            goals: 'clean package'
+            options: '--no-transfer-progress'
+            publishJUnitResults: true
+            testResultsFiles: '**/surefire-reports/TEST-*.xml'
+            javaHomeOption: 'JDKVersion'
+            mavenVersionOption: 'Default'
+            mavenAuthenticateFeed: false
+            effectivePomSkip: false
+            sonarQubeRunAnalysis: false
